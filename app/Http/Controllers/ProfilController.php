@@ -19,36 +19,29 @@ class ProfilController extends Controller
     private string $routePrefix = 'profil';
     private string $title = 'Profil';
     private array $fields = [
-        ['name' => 'nama_desa', 'type' => 'text', 'label' => 'Nama Desa'],
-        ['name' => 'sambutan', 'type' => 'text', 'label' => 'Sambutan'],
-        ['name' => 'profil', 'type' => 'text', 'label' => 'Profil'],
-        ['name' => 'visi', 'type' => 'text', 'label' => 'Visi'],
-        ['name' => 'misi', 'type' => 'text', 'label' => 'Misi'],
-        ['name' => 'tupoksi', 'type' => 'text', 'label' => 'Telepon'],
-        ['name' => 'sejarah', 'type' => 'text', 'label' => 'Email'],
-        ['name' => 'wilayah_desa', 'type' => 'text', 'label' => 'Website'],
-        ['name' => 'alamat', 'type' => 'text', 'label' => 'Website'],
-        ['name' => 'iframe_maps', 'type' => 'text', 'label' => 'Website'],
-        ['name' => 'nomor_telepon', 'type' => 'text', 'label' => 'Website'],
+        ['name' => 'nama_desa', 'type' => 'richeditor', 'label' => 'Nama Desa'],
+        ['name' => 'sambutan', 'type' => 'richeditor', 'label' => 'Sambutan'],
+        ['name' => 'profil', 'type' => 'richeditor', 'label' => 'Profil'],
+        ['name' => 'visi', 'type' => 'richeditor', 'label' => 'Visi'],
+        ['name' => 'misi', 'type' => 'richeditor', 'label' => 'Misi'],
+        ['name' => 'tupoksi', 'type' => 'richeditor', 'label' => 'Tupoksi'],
+        ['name' => 'sejarah', 'type' => 'richeditor', 'label' => 'Sejarah'],
+        ['name' => 'wilayah_desa', 'type' => 'richeditor', 'label' => 'Wilayah Desa'],
+        ['name' => 'alamat', 'type' => 'richeditor', 'label' => 'Alamat'],
+        ['name' => 'iframe_maps', 'type' => 'richeditor', 'label' => 'Maps'],
+        ['name' => 'nomor_telepon', 'type' => 'tel', 'label' => 'Telepon'],
         ['name' => 'file', 'type' => 'file', 'label' => 'File'],
         ['name' => 'file2', 'type' => 'file', 'label' => 'File 2'],
         ['name' => 'file3', 'type' => 'file', 'label' => 'File 3']
     ];
 
     /**
-     * @param Request $request
      * @return Application|Factory|View
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Profil::where('album', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => Profil::count(),
+            'data' => Profil::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -102,8 +95,9 @@ class ProfilController extends Controller
      * @param Profil $profil
      * @return RedirectResponse
      */
-    public function update(ProfilRequest $request, Profil $profil)
+    public function update(ProfilRequest $request, int $id)
     {
+        $profil = Profil::findOrFail($id);
         $data = $request->validated();
 
         foreach (['file1', 'file2', 'file3'] as $fileField)
@@ -115,11 +109,12 @@ class ProfilController extends Controller
     }
 
     /**
-     * @param Profil $profil
+     * @param int $id
      * @return RedirectResponse
      */
-    public function destroy(Profil $profil)
+    public function destroy(int $id)
     {
+        $profil = Profil::findOrFail($id);
         $profil->delete();
 
         return redirect()->back()->with('status', "$this->title has been updated successfully");

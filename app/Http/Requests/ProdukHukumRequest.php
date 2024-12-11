@@ -14,7 +14,6 @@ class ProdukHukumRequest extends FormRequest
             'tgl' => ['required', 'date'],
             'deskripsi' => ['required'],
             'file1' => ['nullable'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

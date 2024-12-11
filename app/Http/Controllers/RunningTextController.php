@@ -14,16 +14,10 @@ class RunningTextController extends Controller
         ['name' => 'running_text', 'type' => 'text', 'label' => 'Running Text'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = RunningText::where('album', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => RunningText::count(),
+            'data' => RunningText::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -57,18 +51,21 @@ class RunningTextController extends Controller
         ]);
     }
 
-    public function update(RunningTextRequest $request, RunningText $runningText)
+    public function update(RunningTextRequest $request, int $id)
     {
+        $runningText = RunningText::findOrFail($id);
         $runningText->update($request->validated());
 
         return redirect()->route("$this->routePrefix.index")->with('status', "$this->title; has been updated successfully");
     }
 
-    public function destroy(RunningText $runningText)
+    public function destroy(int $id)
     {
+        $runningText = RunningText::findOrFail($id);
         $runningText->deleted = 1;
         $runningText->save();
 
         return redirect()->back()->with('status', "$this->title has been updated successfully");
     }
+
 }

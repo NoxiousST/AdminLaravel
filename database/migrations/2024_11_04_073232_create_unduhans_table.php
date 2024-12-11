@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('id_kategori');
             $table->string('deskripsi');
             $table->string('file')->nullable();
-            $table->integer('deleted');
+            $table->integer('deleted')->default(0);
             $table->timestamps();
         });
     }

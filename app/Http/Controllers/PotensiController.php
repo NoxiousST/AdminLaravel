@@ -16,16 +16,10 @@ class PotensiController extends Controller
         ['name' => 'foto', 'type' => 'file', 'label' => 'Foto'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Potensi::where('nama_potensi', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => Potensi::count(),
+            'data' => Potensi::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -62,8 +56,9 @@ class PotensiController extends Controller
         ]);
     }
 
-    public function update(PotensiRequest $request, Potensi $potensi)
+    public function update(PotensiRequest $request, int $id)
     {
+        $potensi = Potensi::findOrFail($id);
         $data = $request->validated();
 
         $data = array_merge($data, $this->handleFile($potensi, $request, $data, 'foto', $this->routePrefix, true));
@@ -72,11 +67,13 @@ class PotensiController extends Controller
         return redirect()->route("$this->routePrefix.index")->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(Potensi $potensi)
+    public function destroy(int $id)
     {
+        $potensi = Potensi::findOrFail($id);
         $potensi->deleted = 1;
         $potensi->save();
 
         return redirect()->back()->with('status', "$this->title has been updated successfully");
     }
+
 }

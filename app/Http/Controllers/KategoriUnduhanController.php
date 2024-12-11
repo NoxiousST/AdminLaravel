@@ -14,16 +14,10 @@ class KategoriUnduhanController extends Controller
         ['name' => 'kategori', 'type' => 'text', 'label' => 'Kategori'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = KategoriUnduhan::where('kategori', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => KategoriUnduhan::count(),
+            'data' => KategoriUnduhan::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -57,16 +51,18 @@ class KategoriUnduhanController extends Controller
         ]);
     }
 
-    public function update(KategoriUnduhanRequest $request, KategoriUnduhan $kategoriUnduhan)
+    public function update(KategoriUnduhanRequest $request, int $id)
     {
+        $kategoriUnduhan = KategoriUnduhan::findOrFail($id);
         $kategoriUnduhan->update($request->validated());
 
         return redirect()->route("$this->routePrefix.index")
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(KategoriUnduhan $kategoriUnduhan)
+    public function destroy(int $id)
     {
+        $kategoriUnduhan = KategoriUnduhan::findOrFail($id);
         $kategoriUnduhan->deleted = 1;
         $kategoriUnduhan->save();
 

@@ -24,17 +24,10 @@ class LayananController extends Controller
         ['name' => 'file3', 'type' => 'file', 'label' => 'File 3'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Layanan::with('kategori')
-            ->when($search, fn($query) => $query->where('judul', 'like', "%$search%"))
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => Layanan::count(),
+            'data' => Layanan::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -74,8 +67,9 @@ class LayananController extends Controller
         ]);
     }
 
-    public function update(LayananRequest $request, Layanan $layanan)
+    public function update(LayananRequest $request, int $id)
     {
+        $layanan = Layanan::findOrFail($id);
         $data = $request->validated();
 
         foreach (['file1', 'file2', 'file3'] as $fileField)
@@ -86,11 +80,14 @@ class LayananController extends Controller
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(Layanan $layanan)
+    public function destroy(int $id)
     {
+        $layanan = Layanan::findOrFail($id);
         $layanan->deleted = 1;
         $layanan->save();
 
         return redirect()->back()->with('status', "$this->title has been updated successfully");
     }
 }
+
+

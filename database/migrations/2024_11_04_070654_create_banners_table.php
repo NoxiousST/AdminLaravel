@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('banners', function (Blueprint $table) {
             $table->id();
             $table->string('file')->nullable();
-            $table->integer('deleted');
+            $table->integer('deleted')->default(0);;
             $table->timestamps();
         });
     }

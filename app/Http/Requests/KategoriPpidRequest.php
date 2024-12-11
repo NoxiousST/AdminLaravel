@@ -10,7 +10,6 @@ class KategoriPpidRequest extends FormRequest
     {
         return [
             'nama_kategori' => ['required'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

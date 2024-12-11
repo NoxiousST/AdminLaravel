@@ -19,16 +19,10 @@ class BannerController extends Controller
         ['name' => 'file', 'type' => 'file', 'label' => 'File'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Banner::where('file', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => Banner::count(),
+            'data' => Banner::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -70,8 +64,9 @@ class BannerController extends Controller
         ]);
     }
 
-    public function update(BannerRequest $request, Banner $banner)
+    public function update(BannerRequest $request, int $id)
     {
+        $banner = Banner::findOrFail($id);
         $data = $request->validated();
 
         $data = array_merge($data, $this->handleFile($banner, $request, $data, 'file', $this->routePrefix, true));
@@ -80,8 +75,9 @@ class BannerController extends Controller
         return redirect()->route("{$this->routePrefix}.index")->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(Banner $banner)
+    public function destroy(int $id)
     {
+        $banner = Banner::findOrFail($id);
         $banner->deleted = 1;
         $banner->save();
 

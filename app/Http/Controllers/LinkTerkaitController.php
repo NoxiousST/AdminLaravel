@@ -18,16 +18,10 @@ class LinkTerkaitController extends Controller
         ['name' => 'file', 'type' => 'file', 'label' => 'File']
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = LinkTerkait::where('judul', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => LinkTerkait::count(),
+            'data' => LinkTerkait::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -64,8 +58,9 @@ class LinkTerkaitController extends Controller
         ]);
     }
 
-    public function update(LinkTerkaitRequest $request, LinkTerkait $linkTerkait)
+    public function update(LinkTerkaitRequest $request, int $id)
     {
+        $linkTerkait = LinkTerkait::findOrFail($id);
         $data = $request->validated();
 
         $data = array_merge($data, $this->handleFile($linkTerkait, $request, $data, 'file', $this->routePrefix, true));
@@ -74,11 +69,13 @@ class LinkTerkaitController extends Controller
         return redirect()->route("$this->routePrefix.index")->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(LinkTerkait $linkTerkait)
+    public function destroy(int $id)
     {
+        $linkTerkait = LinkTerkait::findOrFail($id);
         $linkTerkait->deleted = 1;
         $linkTerkait->save();
 
         return redirect()->back()->with('status', "$this->title has been updated successfully");
     }
+
 }

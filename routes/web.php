@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GaleriFotoController;
@@ -22,7 +24,11 @@ use App\Http\Controllers\ProfilPotensiController;
 use App\Http\Controllers\RunningTextController;
 use App\Http\Controllers\UnduhanController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Resources\BeritaCollection;
+use App\Http\Resources\BeritaResource;
+use App\Http\Resources\KategoriBeritaCollection;
+use App\Models\Berita;
+use App\Models\KategoriBerita;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,41 +42,58 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::resource('agenda', AgendaController::class);
-Route::resource('album', AlbumController::class);
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
 
-Route::resource('artikel', ArtikelController::class);
-Route::resource('kategori_artikel', KategoriArtikelController::class);
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
-Route::resource('banner', BannerController::class);
-Route::post('banner/uploads', [BannerController::class, 'uploads'])->name('banner.uploads');
 
-Route::resource('kategori_berita', KategoriBeritaController::class);
-Route::resource('berita', BeritaController::class);
+Route::middleware('auth')->group(function () {
+    Route::get('/register', function () {
+        return view('auth.register');
+    })->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::resource('galeri_foto', GaleriFotoController::class);
-Route::resource('galeri_video', GaleriVideoController::class);
+    Route::get('account', [AccountController::class, 'index'])->name('account');
+    Route::put('/account', [AccountController::class, 'update'])->name('account.update');
 
-Route::resource('layanan', LayananController::class);
-Route::resource('kategori_layanan', KategoriLayananController::class);
+    Route::resource('agenda', AgendaController::class);
+    Route::resource('album', AlbumController::class);
 
-Route::resource('link_terkait', LinkTerkaitController::class);
+    Route::resource('artikel', ArtikelController::class);
+    Route::resource('kategori_artikel', KategoriArtikelController::class);
 
-Route::resource('ppid', PpidController::class);
-Route::resource('kategori_ppid', KategoriPpidController::class);
+    Route::resource('banner', BannerController::class);
 
-Route::resource('produk_hukum', ProdukHukumController::class);
-Route::resource('profil', ProfilController::class);
-Route::resource('profil_potensi', ProfilPotensiController::class);
-Route::resource('running_text', RunningTextController::class);
-Route::resource('potensi', PotensiController::class);
+    Route::resource('kategori_berita', KategoriBeritaController::class);
+    Route::resource('berita', BeritaController::class);
 
-Route::resource('unduhan', UnduhanController::class);
-Route::resource('kategori_unduhan', KategoriUnduhanController::class);
 
-Route::resource('user', UserController::class);
+    Route::resource('galeri_foto', GaleriFotoController::class);
+    Route::resource('galeri_video', GaleriVideoController::class);
+
+    Route::resource('layanan', LayananController::class);
+    Route::resource('kategori_layanan', KategoriLayananController::class);
+
+    Route::resource('link_terkait', LinkTerkaitController::class);
+
+    Route::resource('ppid', PpidController::class);
+    Route::resource('kategori_ppid', KategoriPpidController::class);
+
+    Route::resource('produk_hukum', ProdukHukumController::class);
+    Route::resource('profil', ProfilController::class);
+    Route::resource('profil_potensi', ProfilPotensiController::class);
+    Route::resource('running_text', RunningTextController::class);
+    Route::resource('potensi', PotensiController::class);
+
+    Route::resource('unduhan', UnduhanController::class);
+    Route::resource('kategori_unduhan', KategoriUnduhanController::class);
+});
+
 
 

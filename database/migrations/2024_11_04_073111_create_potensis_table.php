@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('nama_potensi')->nullable();
             $table->string('foto');
-            $table->integer('deleted');
+            $table->integer('deleted')->default(0);
             $table->timestamps();
         });
     }

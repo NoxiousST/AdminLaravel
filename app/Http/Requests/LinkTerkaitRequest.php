@@ -11,7 +11,6 @@ class LinkTerkaitRequest extends FormRequest
         return [
             'link_terkait' => ['required'],
             'file' => ['nullable'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

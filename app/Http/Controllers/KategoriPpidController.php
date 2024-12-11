@@ -14,16 +14,10 @@ class KategoriPpidController extends Controller
         ['name' => 'nama_kategori', 'type' => 'text', 'label' => 'Nama Kategori'],
     ];
 
-    public function index(\Illuminate\Http\Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = KategoriPpid::where('nama_kategori', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => KategoriPpid::count(),
+            'data' => KategoriPpid::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -57,16 +51,18 @@ class KategoriPpidController extends Controller
         ]);
     }
 
-    public function update(KategoriPpidRequest $request, KategoriPpid $kategoriPpid)
+    public function update(KategoriPpidRequest $request, int $id)
     {
+        $kategoriPpid = KategoriPpid::findOrFail($id);
         $kategoriPpid->update($request->validated());
 
         return redirect()->route("$this->routePrefix.index")
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(KategoriPpid $kategoriPpid)
+    public function destroy(int $id)
     {
+        $kategoriPpid = KategoriPpid::findOrFail($id);
         $kategoriPpid->deleted = 1;
         $kategoriPpid->save();
 

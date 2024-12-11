@@ -10,7 +10,6 @@ class KategoriBeritaRequest extends FormRequest
     {
         return [
             'kategori' => ['required'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

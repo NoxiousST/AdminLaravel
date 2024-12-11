@@ -20,17 +20,10 @@ class PpidController extends Controller
         ['name' => 'file1', 'type' => 'file', 'label' => 'File 1'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Ppid::with('nama_kategori')
-            ->when($search, fn($query) => $query->where('judul', 'like', "%$search%"))
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => Ppid::count(),
+            'data' => Ppid::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -69,8 +62,9 @@ class PpidController extends Controller
         ]);
     }
 
-    public function update(PpidRequest $request, Ppid $ppid)
+    public function update(PpidRequest $request, int $id)
     {
+        $ppid = Ppid::findOrFail($id);
         $data = $request->validated();
 
         $data = array_merge($data, $this->handleFile($ppid, $request, $data, 'file1', $this->routePrefix, true));
@@ -80,8 +74,9 @@ class PpidController extends Controller
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(Ppid $ppid)
+    public function destroy(int $id)
     {
+        $ppid = Ppid::findOrFail($id);
         $ppid->deleted = 1;
         $ppid->save();
 

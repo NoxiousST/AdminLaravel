@@ -12,7 +12,6 @@ class PpidRequest extends FormRequest
             'id_kategori' => ['required', 'integer'],
             'nama_dokumen' => ['required'],
             'file1' => ['nullable'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

@@ -10,7 +10,6 @@ class GaleriVideoRequest extends FormRequest
     {
         return [
             'link_video' => ['required'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

@@ -14,16 +14,10 @@ class KategoriArtikelController extends Controller
         ['name' => 'kategori', 'type' => 'text', 'label' => 'Kategori'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = KategoriArtikel::where('kategori', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => KategoriArtikel::count(),
+            'data' => KategoriArtikel::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -57,16 +51,18 @@ class KategoriArtikelController extends Controller
         ]);
     }
 
-    public function update(KategoriArtikelRequest $request, KategoriArtikel $kategoriArtikel)
+    public function update(KategoriArtikelRequest $request, int $id)
     {
+        $kategoriArtikel = KategoriArtikel::findOrFail($id);
         $kategoriArtikel->update($request->validated());
 
         return redirect()->route("$this->routePrefix.index")
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(KategoriArtikel $kategoriArtikel)
+    public function destroy(int $id)
     {
+        $kategoriArtikel = KategoriArtikel::findOrFail($id);
         $kategoriArtikel->deleted = 1;
         $kategoriArtikel->save();
 

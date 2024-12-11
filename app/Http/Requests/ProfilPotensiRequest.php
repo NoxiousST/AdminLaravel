@@ -15,7 +15,6 @@ class ProfilPotensiRequest extends FormRequest
             'file1' => ['nullable'],
             'file2' => ['nullable'],
             'file3' => ['nullable'],
-            'deleted' => ['required'],
         ];
     }
 

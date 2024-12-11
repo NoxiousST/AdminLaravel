@@ -10,16 +10,16 @@ class UserRequest extends FormRequest
     {
         return [
             'username' => ['required'],
-            'pwd' => ['required'],
-            'is_admin' => ['required', 'integer'],
-            'id_kabupaten' => ['required', 'integer'],
-            'fullname' => ['nullable'],
-            'NIP' => ['nullable'],
-            'email' => ['nullable', 'email', 'max:254'],
-            'telp' => ['nullable'],
-            'batas' => ['required', 'integer'],
-            'isok' => ['required', 'integer'],
-            'deleted' => ['required', 'integer'],
+            'pwd' => ['required', 'min:6'],
+
+            // 'is_admin' => ['required', 'integer'],
+            // 'id_kabupaten' => ['required', 'integer'],
+            'fullname' => ['nullable', 'string'],
+            'NIP' => ['nullable', 'string'],
+            'email' => ['nullable', 'email', 'unique:users,email'],
+            'telp' => ['nullable', 'string'],
+            // 'batas' => ['required', 'integer'],
+            // 'isok' => ['required', 'integer'],
         ];
     }
 

@@ -14,16 +14,10 @@ class GaleriVideoController extends Controller
         ['name' => 'link_video', 'type' => 'text', 'label' => 'Link Video'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = GaleriVideo::where('album', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => GaleriVideo::count(),
+            'data' => GaleriVideo::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -57,16 +51,18 @@ class GaleriVideoController extends Controller
         ]);
     }
 
-    public function update(GaleriVideoRequest $request, GaleriVideo $galeriVideo)
+    public function update(GaleriVideoRequest $request, int $id)
     {
+        $galeriVideo = GaleriVideo::findOrFail($id);
         $galeriVideo->update($request->validated());
 
         return redirect()->route("$this->routePrefix.index")
             ->with('status', "$this->title; has been updated successfully");
     }
 
-    public function destroy(GaleriVideo $galeriVideo)
+    public function destroy(int $id)
     {
+        $galeriVideo = GaleriVideo::findOrFail($id);
         $galeriVideo->deleted = 1;
         $galeriVideo->save();
 

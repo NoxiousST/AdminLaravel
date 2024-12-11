@@ -7,6 +7,7 @@ use App\Models\Agenda;
 use Illuminate\Http\Request;
 
 use App\Traits\FileUploads;
+use Illuminate\Support\Facades\Log;
 
 class AgendaController extends Controller
 {
@@ -23,16 +24,10 @@ class AgendaController extends Controller
         ['name' => 'file3', 'type' => 'file', 'label' => 'File 3'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Agenda::where('judul', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => Agenda::count(),
+            'data' => Agenda::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -70,8 +65,9 @@ class AgendaController extends Controller
         ]);
     }
 
-    public function update(AgendaRequest $request, Agenda $agenda)
+    public function update(AgendaRequest $request, int $id)
     {
+        $agenda = Agenda::findOrFail($id);
         $data = $request->validated();
 
         foreach (['file1', 'file2', 'file3'] as $fileField)
@@ -81,8 +77,9 @@ class AgendaController extends Controller
         return redirect()->route("$this->routePrefix.index")->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(Agenda $agenda)
+    public function destroy(int $id)
     {
+        $agenda = Agenda::findOrFail($id);
         $agenda->deleted = 1;
         $agenda->save();
 

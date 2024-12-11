@@ -15,7 +15,6 @@ class GaleriFotoRequest extends FormRequest
             'file3' => ['nullable'],
             'file4' => ['nullable'],
             'file5' => ['nullable'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

@@ -10,7 +10,6 @@ class KategoriLayananRequest extends FormRequest
     {
         return [
             'kategori' => ['required'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

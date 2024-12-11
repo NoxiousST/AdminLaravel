@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BeritaRequest;
 use App\Models\Berita;
 use App\Models\KategoriBerita;
+use Illuminate\Support\Facades\Log;
 
 class BeritaController extends Controller
 {
@@ -24,17 +25,10 @@ class BeritaController extends Controller
         ['name' => 'file3', 'type' => 'file', 'label' => 'File 3'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Berita::with('kategori')
-            ->when($search, fn($query) => $query->where('judul', 'like', "%$search%"))
-            ->paginate(10);
-
-        return view('crud.table', [
-            'data' => $data,
-            'total' => Berita::count(),
+         return view('crud.table', [
+            'data' => Berita::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -62,7 +56,6 @@ class BeritaController extends Controller
         return redirect()->route('berita.index')->with('status', "$this->title  has been created successfully");
     }
 
-
     public function edit(string $id)
     {
         return view('crud.edit', [
@@ -74,8 +67,9 @@ class BeritaController extends Controller
         ]);
     }
 
-    public function update(BeritaRequest $request, Berita $berita)
+    public function update(BeritaRequest $request, int $id)
     {
+        $berita = Berita::findOrFail($id);
         $data = $request->validated();
 
         foreach (['file1', 'file2', 'file3'] as $fileField)
@@ -86,8 +80,9 @@ class BeritaController extends Controller
     }
 
 
-    public function destroy(Berita $berita)
+    public function destroy(int $id)
     {
+        $berita = Berita::findOrFail($id);
         $berita->deleted = 1;
         $berita->save();
 

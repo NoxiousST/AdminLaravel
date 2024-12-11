@@ -10,7 +10,6 @@ class BannerRequest extends FormRequest
     {
         return [
             'file' => ['nullable'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

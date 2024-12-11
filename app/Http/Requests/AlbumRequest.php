@@ -9,8 +9,7 @@ class AlbumRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'album' => ['required'],
-            'deleted' => ['required', 'integer'],
+            'album' => ['required']
         ];
     }
 

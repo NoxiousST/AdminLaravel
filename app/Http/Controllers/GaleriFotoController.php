@@ -23,16 +23,10 @@ class GaleriFotoController extends Controller
         ['name' => 'file5', 'type' => 'file', 'label' => 'File 5']
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = GaleriFoto::where('judul', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => GaleriFoto::count(),
+            'data' => GaleriFoto::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -70,20 +64,22 @@ class GaleriFotoController extends Controller
         ]);
     }
 
-    public function update(GaleriFotoRequest $request, GaleriFoto $galeriFoto)
+    public function update(GaleriFotoRequest $request, int $id)
     {
+        $galeriFoto = GaleriFoto::findOrFail($id);
         $data = $request->validated();
 
         // Loop through each file field to check if there's a new file
         foreach (['file1', 'file2', 'file3', 'file4', 'file5'] as $fileField)
-            $data = array_merge($data, $this->handleFile($agenda, $request, $data, $fileField, $this->routePrefix, true));
+            $data = array_merge($data, $this->handleFile($galeriFoto, $request, $data, $fileField, $this->routePrefix, true));
         $galeriFoto->update($data);
 
         return redirect()->route("$this->routePrefix.index")->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(GaleriFoto $galeriFoto)
+    public function destroy(int $id)
     {
+        $galeriFoto = GaleriFoto::findOrFail($id);
         $galeriFoto->deleted = 1;
         $galeriFoto->save();
 

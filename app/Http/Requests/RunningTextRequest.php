@@ -10,7 +10,6 @@ class RunningTextRequest extends FormRequest
     {
         return [
             'running_text' => ['required'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

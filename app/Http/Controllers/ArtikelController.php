@@ -25,17 +25,10 @@ class ArtikelController extends Controller
         ['name' => 'file3', 'type' => 'file', 'label' => 'File 3'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Artikel::with('kategori')
-            ->when($search, fn($query) => $query->where('judul', 'like', "%$search%"))
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => Artikel::count(),
+            'data' => Artikel::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -75,8 +68,9 @@ class ArtikelController extends Controller
         ]);
     }
 
-    public function update(ArtikelRequest $request, Artikel $artikel)
+    public function update(ArtikelRequest $request, int $id)
     {
+        $artikel = Artikel::findOrFail($id);
         $data = $request->validated();
 
         foreach (['file1', 'file2', 'file3'] as $fileField)
@@ -87,11 +81,13 @@ class ArtikelController extends Controller
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(Artikel $artikel)
+    public function destroy(int $id)
     {
+        $artikel = Artikel::findOrFail($id);
         $artikel->deleted = 1;
         $artikel->save();
 
         return redirect()->back()->with('status', "$this->title has been updated successfully");
     }
+
 }

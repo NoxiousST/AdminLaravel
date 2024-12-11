@@ -22,17 +22,10 @@ class ProdukHukumController extends Controller
         ['name' => 'file1', 'type' => 'file', 'label' => 'File 1']
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = ProdukHukum::with('kategori')
-            ->when($search, fn($query) => $query->where('judul', 'like', "%$search%"))
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => ProdukHukum::count(),
+            'data' => ProdukHukum::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -71,8 +64,9 @@ class ProdukHukumController extends Controller
         ]);
     }
 
-    public function update(ProdukHukumRequest $request, ProdukHukum $produkHukum)
+    public function update(ProdukHukumRequest $request, int $id)
     {
+        $produkHukum = ProdukHukum::findOrFail($id);
         $data = $request->validated();
 
         $data = array_merge($data, $this->handleFile($produkHukum, $request, $data, 'file1', $this->routePrefix, true));
@@ -82,11 +76,13 @@ class ProdukHukumController extends Controller
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(ProdukHukum $produkHukum)
+    public function destroy(int $id)
     {
+        $produkHukum = ProdukHukum::findOrFail($id);
         $produkHukum->deleted = 1;
         $produkHukum->save();
 
         return redirect()->back()->with('status', "$this->title has been updated successfully");
     }
+
 }

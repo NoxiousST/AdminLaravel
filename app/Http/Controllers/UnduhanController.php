@@ -21,17 +21,10 @@ class UnduhanController extends Controller
         ['name' => 'file', 'type' => 'file', 'label' => 'File'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Unduhan::with('kategori')
-            ->when($search, fn($query) => $query->where('deskripsi', 'like', "%$search%"))
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => Unduhan::count(),
+            'data' => Unduhan::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -70,8 +63,9 @@ class UnduhanController extends Controller
         ]);
     }
 
-    public function update(UnduhanRequest $request, Unduhan $unduhan)
+    public function update(UnduhanRequest $request, int $id)
     {
+        $unduhan = Unduhan::findOrFail($id);
         $data = $request->validated();
 
         $data = array_merge($data, $this->handleFile($unduhan, $request, $data, 'file', $this->routePrefix, true));
@@ -81,8 +75,9 @@ class UnduhanController extends Controller
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(Unduhan $unduhan)
+    public function destroy(int $id)
     {
+        $unduhan = Unduhan::findOrFail($id);
         $unduhan->deleted = 1;
         $unduhan->save();
 

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->date('tgl');
             $table->text('deskripsi');
             $table->string('file1')->nullable();
-            $table->integer('deleted');
+            $table->integer('deleted')->default(0);
             $table->timestamps();
         });
     }

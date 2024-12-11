@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AlbumController extends Controller
 {
@@ -14,16 +15,10 @@ class AlbumController extends Controller
         ['name' => 'album', 'type' => 'text', 'label' => 'Album'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = Album::where('album', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => Album::count(),
+            'data' => Album::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -57,15 +52,17 @@ class AlbumController extends Controller
         ]);
     }
 
-    public function update(AlbumRequest $request, Album $album)
+    public function update(AlbumRequest $request, int $id)
     {
+        $album = Album::findOrFail($id);
         $album->update($request->validated());
 
         return redirect()->route("$this->routePrefix.index")->with('status', "$this->title; has been updated successfully");
     }
 
-    public function destroy(Album $album)
+    public function destroy(int $id)
     {
+        $album = Album::findOrFail($id);
         $album->deleted = 1;
         $album->save();
 

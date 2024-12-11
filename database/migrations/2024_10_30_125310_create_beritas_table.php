@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('file1')->nullable();
             $table->string('file2')->nullable();
             $table->string('file3')->nullable();
-            $table->integer('deleted');
+            $table->integer('deleted')->default(0);;
             $table->timestamps();
         });
     }

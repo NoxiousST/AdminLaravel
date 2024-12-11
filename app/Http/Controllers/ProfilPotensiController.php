@@ -25,17 +25,10 @@ class ProfilPotensiController extends Controller
         ['name' => 'file3', 'type' => 'file', 'label' => 'File 3'],
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = ProfilPotensi::with('nama_potensi')
-            ->when($search, fn($query) => $query->where('nama_tempat', 'like', "%$search%"))
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => ProfilPotensi::count(),
+            'data' => ProfilPotensi::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -75,8 +68,9 @@ class ProfilPotensiController extends Controller
         ]);
     }
 
-    public function update(ProfilPotensiRequest $request, ProfilPotensi $profilPotensi)
+    public function update(ProfilPotensiRequest $request, int $id)
     {
+        $profilPotensi = ProfilPotensi::findOrFail($id);
         $data = $request->validated();
 
         foreach (['file1', 'file2', 'file3'] as $fileField)
@@ -87,8 +81,9 @@ class ProfilPotensiController extends Controller
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(ProfilPotensi $profilPotensi)
+    public function destroy(int $id)
     {
+        $profilPotensi = ProfilPotensi::findOrFail($id);
         $profilPotensi->deleted = 1;
         $profilPotensi->save();
 

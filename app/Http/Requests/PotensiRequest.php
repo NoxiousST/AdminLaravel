@@ -11,7 +11,6 @@ class PotensiRequest extends FormRequest
         return [
             'nama_potensi' => ['nullable'],
             'foto' => ['required'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

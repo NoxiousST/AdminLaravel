@@ -10,6 +10,7 @@ export default {
         "./resources/views/**/*.blade.php",
         "./app/Services/**/*.php",
         "./node_modules/preline/dist/*.js",
+        "./resources/fonts/**/*.ttf",
     ],
 
     theme: {
@@ -17,6 +18,7 @@ export default {
             'rubik': ['Rubik', 'sans-serif'],
             'lato': ['Lato', 'sans-serif'],
             'maven': ['Maven Pro', 'sans-serif'],
+            'gilroy': ['Gilroy', 'sans-serif'],
         },
         container: {
             center: true,

@@ -18,7 +18,7 @@
         --primary-foreground: 210 40% 98%;
         --secondary: 210 40% 96.1%;
         --secondary-foreground: 222.2 47.4% 11.2%;
-        --muted: 210 40% 96.1%;
+        --muted: 218 11% 65%;
         --muted-foreground: 215.4 16.3% 46.9%;
         --accent: 210 40% 96.1%;
         --accent-foreground: 222.2 47.4% 11.2%;
@@ -36,19 +36,19 @@
     }
 
     .dark {
-        --background: 222.2 84% 4.9%;
+        --background: 222 13% 15%;
         --foreground: 210 40% 98%;
-        --card: 222.2 84% 4.9%;
+        --card: 231 14% 20%;
         --card-foreground: 210 40% 98%;
         --popover: 222.2 84% 4.9%;
         --popover-foreground: 210 40% 98%;
-        --primary: 217.2 91.2% 59.8%;
-        --primary-foreground: 222.2 47.4% 11.2%;
-        --secondary: 217.2 32.6% 17.5%;
+        --primary: 239 84% 67%;
+        --primary-foreground: 226.45 100% 93.92%;
+        --secondary: 243 75% 59%;
         --secondary-foreground: 210 40% 98%;
         --muted: 217.2 32.6% 17.5%;
         --muted-foreground: 215 20.2% 65.1%;
-        --accent: 217.2 32.6% 17.5%;
+        --accent: 231 14% 20%;
         --accent-foreground: 210 40% 98%;
         --destructive: 0 62.8% 30.6%;
         --destructive-foreground: 210 40% 98%;
@@ -61,6 +61,19 @@
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
     }
+
+    .tooltip {
+        @apply opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700;
+    }
+
+    .tiptap h1 {
+        @apply text-3xl font-bold;
+    }
+
+    .tiptap-button {
+        @apply size-8 inline-flex justify-center items-center rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10 dark:disabled:text-white/30 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent;
+    }
+
 }
 
 @layer utilities {
@@ -74,4 +87,136 @@
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
     }
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    font-style: normal;
+    font-weight: 200;
+    src: url('/resources/fonts/Gilroy-Thin.ttf');
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/resources/fonts/Gilroy-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/resources/fonts/Gilroy-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    font-style: normal;
+    font-weight: 500;
+    src: url('/resources/fonts/Gilroy-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/resources/fonts/Gilroy-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    font-style: normal;
+    font-weight: 800;
+    src: url('/resources/fonts/Gilroy-ExtraBold.ttf');
+}
+
+#nprogress .bar {
+    background: hsl(var(--primary)) !important;
+}
+.dt-layout-row:has(.dt-search),
+.dt-layout-row:has(.dt-length),
+.dt-layout-row:has(.dt-paging) {
+    display: none !important;
+}
+
+.tox-tinymce {
+    border: none !important;
+}
+
+.tox .tox-editor-header,
+.tox .tox-menubar,
+.tox .tox-mbtn,
+.tox .tox-toolbar-overlord,
+.tox .tox-toolbar__primary,
+.tox .tox-tbtn,
+.tox .tox-statusbar {
+    background: hsl(var(--accent)) !important;
+}
+
+.tox .tox-collection,
+.tox .tox-toolbar__overflow {
+    background: hsl(var(--accent)) !important;
+    border: 1px solid rgb(221 214 254 / 0.2) !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+}
+
+.tox .tox-mbtn,
+.tox .tox-tbtn {
+    background: hsl(var(--accent)) !important;
+}
+
+.tox .tox-tbtn {
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: var(--radius) !important;
+    width: 2rem !important;
+    height: 2rem !important;
+}
+
+.tox .tox-tbtn.tox-tbtn--select {
+    width: fit-content !important;
+}
+
+.tox .tox-mbtn:hover,
+.tox .tox-tbtn:hover,
+.tox .tox-mbtn:hover .tox-icon {
+    color: hsl(var(--accent-foreground)) !important;
+    background: rgb(255 255 255 / 0.1) !important;
+}
+
+.tox .tox-tbtn--enabled {
+    background: hsl(var(--primary)) !important;
+}
+
+.tox .tox-dialog-wrap__backdrop {
+    background: hsl(var(--background) / 0.8) !important;
+}
+
+.tox .tox-dialog,
+.tox .tox-dialog__header,
+.tox .tox-textarea,
+.tox .tox-dialog__footer {
+    background: hsl(var(--accent)) !important;
+}
+
+.tox .tox-collection--list .tox-collection__item--enabled:not(.tox-collection__item--state-disabled) {
+    background: rgb(255 255 255 / 0.1) !important;
+}
+
+.tox .tox-textarea-wrap:focus-within,
+.tox .tox-button{
+    border-color: hsl(var(--primary)) !important;
+}
+
+.tox .tox-edit-area::before {
+    border: 3px solid hsl(var(--primary)) !important;
+}
+
+.tox .tox-statusbar {
+    align-items: start !important;
+}
+
+.tox .tox-statusbar__branding {
+    display: none !important;
 }

@@ -12,14 +12,14 @@ return new class extends Migration {
             $table->string('username');
             $table->string('pwd');
             $table->integer('is_admin');
-            $table->integer('id_kabupaten');
+            $table->integer('id_kabupaten')->default(0);
             $table->string('fullname')->nullable();
             $table->string('NIP')->nullable();
             $table->string('email')->nullable();
             $table->string('telp')->nullable();
-            $table->integer('batas');
-            $table->integer('isok');
-            $table->integer('deleted');
+            $table->integer('batas')->default(0);
+            $table->integer('isok')->default(0);
+            $table->integer('deleted')->default(0);
             $table->timestamps();
         });
     }

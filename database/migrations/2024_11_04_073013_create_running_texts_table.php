@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('running_texts', function (Blueprint $table) {
             $table->id();
             $table->string('running_text');
-            $table->integer('deleted');
+            $table->integer('deleted')->default(0);
             $table->timestamps();
         });
     }

@@ -12,7 +12,6 @@ class UnduhanRequest extends FormRequest
             'id_kategori' => ['required'],
             'deskripsi' => ['required'],
             'file' => ['nullable'],
-            'deleted' => ['required', 'integer'],
         ];
     }
 

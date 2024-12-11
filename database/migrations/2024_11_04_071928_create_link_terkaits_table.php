@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('link_terkait');
             $table->string('file')->nullable();
-            $table->integer('deleted');
+            $table->integer('deleted')->default(0);
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\KategoriBeritaRequest;
 use App\Models\KategoriBerita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class KategoriBeritaController extends Controller
 {
@@ -14,16 +15,10 @@ class KategoriBeritaController extends Controller
         ['name' => 'kategori', 'type' => 'text', 'label' => 'Kategori']
     ];
 
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $data = KategoriBerita::where('kategori', 'like', "%$search%")
-            ->paginate(10);
-
         return view('crud.table', [
-            'data' => $data,
-            'total' => KategoriBerita::count(),
+            'data' => KategoriBerita::all(),
             'columns' => $this->fields,
             'routePrefix' => $this->routePrefix,
             'title' => $this->title,
@@ -49,6 +44,7 @@ class KategoriBeritaController extends Controller
 
     public function edit(string $id)
     {
+        Log::debug(KategoriBerita::findOrFail($id));
         return view('crud.edit', [
             'data' => KategoriBerita::findOrFail($id),
             'fields' => $this->fields,
@@ -57,16 +53,17 @@ class KategoriBeritaController extends Controller
         ]);
     }
 
-    public function update(KategoriBeritaRequest $request, KategoriBerita $kategoriBerita)
+    public function update(KategoriBeritaRequest $request, int $id)
     {
-        $kategoriBerita->update($request->validated());
+        KategoriBerita::find($id)->update($request->validated());
 
         return redirect()->route("$this->routePrefix.index")
             ->with('status', "$this->title has been updated successfully");
     }
 
-    public function destroy(KategoriBerita $kategoriBerita)
+    public function destroy(int $id)
     {
+        $kategoriBerita = KategoriBerita::findOrFail($id);
         $kategoriBerita->deleted = 1;
         $kategoriBerita->save();
 
