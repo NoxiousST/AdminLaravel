@@ -6,7 +6,7 @@
 		$current = Route::current()->getName();
 	@endphp
 	<div class="relative flex-1 flex flex-col min-h-0 pt-0">
-		<a href="#" class="text-xl font-bold flex items-center ml-8 mb-4">
+		<a href="#" class="text-foreground text-xl font-bold flex items-center ml-8 mb-4">
 			<img src="{{ asset('img/kominfo.png') }}" class="size-8 mr-4"
 			     alt="Dinkominfo Logo">
 			<span class="self-center whitespace-nowrap font-gilroy">Dinkomifo</span>
